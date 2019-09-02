@@ -8,7 +8,9 @@ const URL = 'http://localhost:3000/stocks'
 class MainContainer extends Component {
   state = {
     allStocks: [],
-    boughtStock: []
+    boughtStock: [], 
+    filterState: ""
+   
   };
 
   componentDidMount = () => {
@@ -22,7 +24,8 @@ class MainContainer extends Component {
       });
   };
 
-  buyStock = (stock) =>{
+  buyStock = (event, stock) =>{
+  
     let buy = this.state.boughtStock
     buy.push(stock)
     this.setState({
@@ -30,24 +33,65 @@ class MainContainer extends Component {
     })
   }
   
-  sellStock = (stock) =>{
+  sellStock = (event, stock) =>{
+    
     let buy = this.state.boughtStock
     
     this.setState({
-      boughtStock: buy.filter(stock => stock !== stock)
+      
+      boughtStock: buy.filter(res => res !== stock)
     })
   }
+
+  // list.sort((a, b) => (a.color > b.color) ? 1 : -1)
   
+  sort = (event) =>{
+    if(event.target.value === 'Alphabetically'){
+      this.setState({
+        allStocks: this.state.allStocks.sort((a, b) => (a.name > b.name) ? 1 : -1),
+        boughtStock: this.state.boughtStock.sort((a, b) => (a.name > b.name) ? 1 : -1)
+      })
+    }
+    else{
+      this.setState({
+        allStocks: this.state.allStocks.sort((a, b) => (a.price > b.price) ? 1 : -1),
+        boughtStock: this.state.boughtStock.sort((a, b) => (a.price > b.price) ? 1 : -1)
+      })
+    }
+    
+  }
+
+  filter = (event) => {
+    this.setState({
+      filterState: event.target.value})
+  }
+
+
+
+arrayToSend = () => {
+  // debugger
+  switch(this.state.filterState){
+    case 'Tech':
+    return this.state.allStocks.filter(stock => stock.type === 'Tech')
+    case 'Finance':
+    return this.state.allStocks.filter(stock => stock.type === 'Finance')
+    case 'Sportswear':
+    return this.state.allStocks.filter(stock => stock.type === 'Sportswear')
+    default: 
+    return this.state.allStocks
+  }
+}
+
 
 
   render() {
     return (
       <div>
-        <SearchBar />
+        <SearchBar sort={this.sort} filter={this.filter}/>
 
         <div className="row">
           <div className="col-8">
-            <StockContainer allStocks={this.state.allStocks} buyOrSellStock={this.buyStock}/>
+            <StockContainer allStocks={this.arrayToSend()} buyOrSellStock={this.buyStock}/>
           </div>
           <div className="col-4">
             <PortfolioContainer boughtStock={this.state.boughtStock} buyOrSellStock={this.sellStock}/>

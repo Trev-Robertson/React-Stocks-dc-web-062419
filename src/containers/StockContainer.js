@@ -8,7 +8,7 @@ class StockContainer extends Component {
       <div>
         <h2>Stocks</h2>
         {
-         this.props.allStocks.map( stock => <Stock key={stock.id} buyOrSellStock={this.props.buyOrSellStock} stock={stock}/>)
+         this.props.allStocks.map( stock => <Stock key={stock.id * Math.random()*10} buyOrSellStock={this.props.buyOrSellStock} stock={stock}/>)
          //render the list of stocks here
         }
       </div>

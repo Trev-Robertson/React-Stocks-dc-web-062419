@@ -5,8 +5,8 @@ import React from "react";
 
 
 const Stock = (props) => (
-  <div onClick={() => props.buyOrSellStock(props.stock)}>
-    <div className="card">
+  <div >
+    <div onClick={(event) => props.buyOrSellStock(event, props.stock)} className="card">
       <div className="card-body">
         <h5 className="card-title">
           {
