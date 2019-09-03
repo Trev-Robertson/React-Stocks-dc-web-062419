@@ -33,13 +33,15 @@ class MainContainer extends Component {
     })
   }
   
-  sellStock = (event, stock) =>{
-    
+  sellStock = (event, stock, index) =>{
+   
     let buy = this.state.boughtStock
+    buy.splice(index, 1)
+
     
     this.setState({
       
-      boughtStock: buy.filter(res => res !== stock)
+      boughtStock: buy
     })
   }
 
